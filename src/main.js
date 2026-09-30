@@ -1,6 +1,8 @@
 const {createUsersTable, insertUser,  fetchAllUsers, updateUserInfo, deleteInfo} = require ('./concepts/basic-queries');
 const {getUsersWhere, getSortedUsers, getPaginatedUsers} = require('./concepts/filter-sorting')
-const {createPostsTable, insertNewPost} = require('./concepts/relationships')
+const {createPostsTable, insertNewPost} = require('./concepts/relationships');
+const { getUsersWithPosts,  getAllUsersAndTheirPosts } = require ('./concepts/joins');
+const { countPostsByUser, averagePostsPerUser } = require ('./concepts/aggregation')
 
 
 //test basic queries
@@ -56,17 +58,50 @@ async function testFilterAndSortQueries(){
 async function testRelationshipQueries(){
     try{
        // await createPostsTable()
-       await insertNewPost('First post', 'Hello ', 5)
+        await insertNewPost('First post', 'Hello ', 5);
+        await insertNewPost('First post', 'Yo ', 7)
+        await insertNewPost('First post', 'Hi ', 8)
 
     }catch(e){
         console.error('Error', e)
     }
 }
 
+
+async function testJoinQueries(){
+    try{
+        
+        // const usersWithPosts = await getUsersWithPosts()
+        // console.log(usersWithPosts)
+        const  allUsersWithTheirPosts = await getAllUsersAndTheirPosts();
+        console.log(allUsersWithTheirPosts)
+
+    }catch(e){
+        console.error('Error', e)
+    }
+
+}
+
+async function testAggreQueries(){
+    try{
+        // const postCounts = await countPostsByUser()
+        // console.log(postCounts)
+
+        const postAvgCounts = await averagePostsPerUser()
+        console.log(postAvgCounts)
+
+    }catch(e){
+        console.error('Error', e)
+    }
+
+}
+
 async function testAllQueries(){
-    // await testBasicQueries();
-    // await testFilterAndSortQueries();
-     await testRelationshipQueries()
+    await testBasicQueries();
+    await testFilterAndSortQueries();
+    await testRelationshipQueries();
+    await testJoinQueries()
+        await testAggreQueries()
 }
 
 
